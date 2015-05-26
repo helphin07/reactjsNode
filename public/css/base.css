@@ -70,3 +70,24 @@ ul {
   display: block;
   color: #383838;
 }
+
+.videoIco{
+    position: relative;
+}
+.videoIco:hover .playIco{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 3;
+  display: block!important;
+  background: url(/images/playbutton.png) center no-repeat;
+  
+}
+.playerCnt{
+  float: left;
+}
+.desc{
+  clear:both;
+}

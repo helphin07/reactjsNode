@@ -28,7 +28,10 @@ var ContentListView = React.createClass({
 		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
 		return (
 			<div className="content">
-				<AssetPic assetpath={this.props.assetpath}  />
+        <a className="itemname videoIco" href={"#itemdetails/"+this.props.id}  key={this.props.key}>
+				  <AssetPic assetpath={this.props.assetpath}  />
+          <span className="playIco" />
+        </a>
 				<a className="itemname" href={"#itemdetails/"+this.props.id}  key={this.props.key}> {this.props.showname} </a>
 			</div>
 			);
@@ -51,7 +54,7 @@ var ContentListFetch = React.createClass({
 	getInitialState: function() {
 		return {data: []};
 	},
-
+  
 	componentDidMount: function() {
 		$.get(this.props.url, function(result) {
 			var collection = typeof result.entries !== 'undefined' ? result.entries : result;
@@ -104,11 +107,15 @@ var ItemDetails = React.createClass({
 		return (
 			<div className="content">
 		 
-		 
+		  <a className="videoIco playerCnt" href="#">
 			<VideoOverLay url={data.media[0].url} poster={data.images.portrait.url} />
-			<h2 className="itemname"> {data.title} </h2>
-			<div className="otherdetails">
-			<div className="description">{data.description}</div>
+      <span className="playIco" />
+      </a>
+      <div className="desc">
+  			<h2 className="itemname"> {data.title} </h2>
+  			<div className="otherdetails">
+  			<div className="description">{data.description}</div>
+        </div>
 			</div>
 			</div>
 			);
@@ -130,7 +137,10 @@ render: function() {
 
 	var videoOptions = {
 		url: this.props.url,
-		poster: this.props.poster
+		poster: this.props.poster,
+    playerVars: { 
+        autoplay: 1
+      }
 	}
 
 		return (
