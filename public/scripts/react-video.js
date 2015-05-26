@@ -238,10 +238,3 @@ var VideoPlayer = React.createClass({displayName: "VideoPlayer",
   }
 });
 
-var videoStage = document.getElementById('video_stage')
-var videoOptions = {
-    url: 'http://setindiapd.brightcove.com.edgesuite.net/709285226001/2015/04/709285226001_4197544608001_liv-cid-ep-1221-full.mp4',
-  poster: 'http://resources.sonyliv.com/image/upload/c_fill,g_north,w_480,h_258/sl-img-show-32163-cid-img-1414391146886.jpg'
-
-};
-React.render(React.createElement(VideoPlayer, {options: videoOptions}), videoStage);
