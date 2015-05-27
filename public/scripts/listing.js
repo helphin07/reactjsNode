@@ -28,9 +28,8 @@ var ContentListView = React.createClass({
 		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
 		return (
 			<div className="content">
-        <a className="itemname videoIco" href={"#itemdetails/"+this.props.id}  key={this.props.key}>
+        <a className="itemname" href={"#itemdetails/"+this.props.id}  key={this.props.key}>
 				  <AssetPic assetpath={this.props.assetpath}  />
-          <span className="playIco" />
         </a>
 				<a className="itemname" href={"#itemdetails/"+this.props.id}  key={this.props.key}> {this.props.showname} </a>
 			</div>
@@ -47,6 +46,31 @@ var AssetPic = React.createClass({
 			);
 	}
 });
+
+
+/*Fetch Appgrid content */
+var AppgridList = React.createClass({
+	getInitialState: function() {
+		return {data: []};
+	},
+  
+  
+  componentDidMount: function() {
+    $.get(this.props.url, function(result) {
+      var collection = typeof result !== 'undefined' ? result : result;
+       if (this.isMounted()) {
+           this.setState({data: collection[0].title});
+       }
+
+    }.bind(this));
+  },
+  render: function() {
+    return (
+      <h2>{this.state.data}</h2>
+      );
+  }
+});
+
 
 /* Fetch the content listing from the server and render the result */
 var ContentListFetch = React.createClass({
@@ -67,12 +91,13 @@ var ContentListFetch = React.createClass({
 	render: function() {
 		return (
 			<div className="ContentBox">
-			<h2>Content listing</h2>
+			<AppgridList url="appgrid.json" appid="102"/>
 			<ContentList data={this.state.data} />
 			</div>
 			);
 	}
 });
+
 
 /* Fetch the content details from the server and render the result */
 var ContentDetailsFetch = React.createClass({
