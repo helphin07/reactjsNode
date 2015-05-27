@@ -88,7 +88,7 @@ var VideoPlaybackToggleButton = React.createClass({displayName: "VideoPlaybackTo
 
 var VideoPlaybackMainButton = React.createClass({displayName: "VideoPlaybackMainButton",
   render: function(){
-    var icon = this.props.playing ? (React.createElement("i", {className: ""})) : (React.createElement("span", {className: "main-icon-play"}));
+    var icon = this.props.playing ? (React.createElement("span", {className: ""})) : (React.createElement("span", {className: "main-icon-play"}));
     return (
       React.createElement("button", {className: "main_playback", onClick: this.props.handleTogglePlayback}, icon )
     );
