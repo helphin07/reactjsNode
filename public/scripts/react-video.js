@@ -86,6 +86,15 @@ var VideoPlaybackToggleButton = React.createClass({displayName: "VideoPlaybackTo
   }
 });
 
+var VideoPlaybackMainButton = React.createClass({displayName: "VideoPlaybackMainButton",
+  render: function(){
+    var icon = this.props.playing ? (React.createElement("i", {className: ""})) : (React.createElement("span", {className: "main-icon-play"}));
+    return (
+      React.createElement("button", {className: "main_playback", onClick: this.props.handleTogglePlayback}, icon )
+    );
+  }
+});
+
 var VideoProgressBar = React.createClass({displayName: "VideoProgressBar",
   render: function(){
     var playedStyle = {width: this.props.percentPlayed + '%'}
@@ -216,14 +225,15 @@ var VideoPlayer = React.createClass({displayName: "VideoPlayer",
   render: function(){
     return (
       React.createElement("div", {className: "video_player"}, 
+        React.createElement(VideoPlaybackMainButton, {handleTogglePlayback: this.togglePlayback, playing: this.state.playing}), 
         React.createElement(Video, {ref: "video", 
-               url: this.props.options.url, 
-               volume: this.state.volumeLevel, 
-               poster: this.props.options.poster, 
-               currentTimeChanged: this.updateProgressBar, 
-               durationChanged: this.updateDuration, 
-               updatePlaybackStatus: this.videoEnded, 
-               bufferChanged: this.updateBufferBar}), 
+          url: this.props.options.url, 
+          volume: this.state.volumeLevel, 
+          poster: this.props.options.poster, 
+          currentTimeChanged: this.updateProgressBar, 
+          durationChanged: this.updateDuration, 
+          updatePlaybackStatus: this.videoEnded, 
+          bufferChanged: this.updateBufferBar}), 
         React.createElement("div", {className: "video_controls", ref: "videoControls"}, 
           React.createElement(VideoProgressBar, {percentPlayed: this.state.percentPlayed, percentBuffered: this.state.percentBuffered}), 
           React.createElement(VideoPlaybackToggleButton, {handleTogglePlayback: this.togglePlayback, playing: this.state.playing}), 
@@ -231,7 +241,7 @@ var VideoPlayer = React.createClass({displayName: "VideoPlayer",
           React.createElement(VideoTimeIndicator, {duration: this.state.duration, currentTime: this.state.currentTime}), 
           React.createElement("div", {className: "rhs"}, 
             React.createElement(VideoFullScreenToggleButton, {onToggleFullscreen: this.toggleFullscreen})
-          )
+            )
         )
       )
     );

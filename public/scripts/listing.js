@@ -106,17 +106,13 @@ var ItemDetails = React.createClass({
 		if(typeof data.images !== 'undefined'){
 		return (
 			<div className="content">
-		 
-		  <a className="videoIco playerCnt" href="#">
-			<VideoOverLay url={data.media[0].url} poster={data.images.portrait.url} />
-      <span className="playIco" />
-      </a>
-      <div className="desc">
-  			<h2 className="itemname"> {data.title} </h2>
-  			<div className="otherdetails">
-  			<div className="description">{data.description}</div>
-        </div>
-			</div>
+				<VideoOverLay url={data.media[0].url} poster={data.images.portrait.url} />
+				<div className="desc">
+					<h2 className="itemname"> {data.title} </h2>
+					<div className="otherdetails">
+						<div className="description">{data.description}</div>
+					</div>
+				</div>
 			</div>
 			);
 		}
