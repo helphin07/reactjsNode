@@ -85,6 +85,7 @@ var ContentListingActions = {
                 console.log('error');
             });
     },
+    
     /**
      * Function to get the contents list
      */
@@ -194,18 +195,18 @@ var ListingMain = React.createClass({displayName: 'ListingMain',
         ListingActions.getContentList("SONYLIV");
     },
 
-    _onChange: function () {
-        this.setState({
-            contents: ListingStore.getContentList("SONYLIV")
-        });
-    },
-
     componentWillMount: function () {
         ListingStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function () {
         ListingStore.removeChangeListener(this._onChange);
+    },
+
+    _onChange: function () {
+        this.setState({
+            contents: ListingStore.getContentList("SONYLIV")
+        });
     },
 
     render: function() {

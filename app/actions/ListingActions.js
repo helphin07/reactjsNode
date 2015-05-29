@@ -28,6 +28,7 @@ var ContentListingActions = {
                 console.log('error');
             });
     },
+    
     /**
      * Function to get the contents list
      */

@@ -22,18 +22,18 @@ var ListingMain = React.createClass({
         ListingActions.getContentList("SONYLIV");
     },
 
-    _onChange: function () {
-        this.setState({
-            contents: ListingStore.getContentList("SONYLIV")
-        });
-    },
-
     componentWillMount: function () {
         ListingStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function () {
         ListingStore.removeChangeListener(this._onChange);
+    },
+
+    _onChange: function () {
+        this.setState({
+            contents: ListingStore.getContentList("SONYLIV")
+        });
     },
 
     render: function() {
