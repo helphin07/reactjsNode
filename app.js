@@ -1,37 +1,41 @@
-/**
- * This file provided by Facebook is for non-commercial testing and evaluation purposes only.
- * Facebook reserves all rights not expressly granted.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-var fs = require('fs');
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var http = require('http');
 
-
-var express = require('express'),
-    http = require('http'),
-    path = require('path'),
-    app = express();
-
+//For requiring `.jsx` files as Node modules
+require('node-jsx').install({extension: '.jsx'});
 var React = require('react');
-var Router = require('react-router');
-    
+var App = require('./app/App.jsx');
+
+var app = express();
+
 var wynk_api = 'http://hooq-staging-env.elasticbeanstalk.com/v0.11';
 var feed_path = '/feeds/SONYLIV/programs?pageSize=15';
 var detail_path = '/feeds/SONYLIV/program/';
 
-app.set('port', (process.env.PORT || 3000));
+// view engine setup
+app.set('views', path.join(__dirname, 'app/views'));
+app.set('view engine', 'ejs');
 
-app.use('/', express.static(path.join(__dirname, 'public')));
+// uncomment after placing your favicon in /public
+//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Render React on Server
+app.get('/',function(req,res){
+    var markup=React.renderComponentToString(App());
+    res.send('<!DOCTYPE html>'+markup);
+});
+
+/* Middelware API - Start */
 
 app.get('/list', function(req, res){
     console.log('listing page');
@@ -85,23 +89,40 @@ app.get('/details/:id', function(req, res) {
 
 app.get('/itemdetails/:id', function(req, res) {
     console.log(req.params.id);
-    
+});
+/* Middelware API - End */
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
+// error handlers
 
-app.post('/comments.json', function(req, res) {
-  fs.readFile('comments.json', function(err, data) {
-    var comments = JSON.parse(data);
-    comments.push(req.body);
-    fs.writeFile('comments.json', JSON.stringify(comments, null, 4), function(err) {
-      res.setHeader('Content-Type', 'application/json');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.send(JSON.stringify(comments));
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        console.log(err);
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
-
-app.listen(app.get('port'), function() {
-  console.log('Server started: http://localhost:' + app.get('port') + '/');
-});
+module.exports = app;
