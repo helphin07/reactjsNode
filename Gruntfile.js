@@ -35,4 +35,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [
         'browserify'
     ]);
+    grunt.registerTask('serve', [
+        'default','nodemon'
+    ]);
 };

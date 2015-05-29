@@ -9,6 +9,7 @@ var ListingActions = require('../actions/ListingActions');
 var ListingStore = require('../stores/ListingStore');
 
 var ListingMain = React.createClass({
+
     handleChange: function (e) {
         console.log(e);
     },
@@ -16,8 +17,6 @@ var ListingMain = React.createClass({
     getInitialState: function() {
         return {data: []};
     },
-  
-
 
     componentDidMount: function() {
         ListingActions.getContentList("SONYLIV");
@@ -25,7 +24,7 @@ var ListingMain = React.createClass({
 
     _onChange: function () {
         this.setState({
-            contents: ListingStore.getContentList()
+            contents: ListingStore.getContentList("SONYLIV")
         });
     },
 
@@ -38,25 +37,21 @@ var ListingMain = React.createClass({
     },
 
     render: function() {
-        console.log('test render');
+        console.log('Listing main render');
         console.log(this.state.contents);
         if(this.state.contents) {
             return (
                 <div className="ContentBox">
-                    <AppgridList/>
                     <ContentList data={this.state.contents} />
                 </div>
             );
         }
         else{
             return (
-                <div className="ContentBox">
-                </div>
+                <div className="ContentBox"> </div>
             );
         }
     }
-
 });
-
 
 module.exports = ListingMain;

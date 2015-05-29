@@ -13,16 +13,15 @@ var App = require('./app/App.jsx');
 
 var app = express();
 
-var wynk_api = 'http://hooq-staging-env.elasticbeanstalk.com/v0.11';
-var feed_path = '/feeds/SONYLIV/programs?pageSize=15';
-var detail_path = '/feeds/SONYLIV/program/';
+var wynk_api = 'http://hooq-staging-env.elasticbeanstalk.com/v0.11/feeds/';
+var feed_path = 'SONYLIV/programs?pageSize=15';
+var detail_path = 'SONYLIV/program/';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,6 +38,7 @@ app.get('/',function(req,res){
 
 app.get('/list', function(req, res){
     console.log('listing page');
+    console.log(req);
     http.get(wynk_api+feed_path, function(response) {
         var body;
         console.log("Got response: " + response.statusCode);
@@ -89,6 +89,10 @@ app.get('/details/:id', function(req, res) {
 
 app.get('/itemdetails/:id', function(req, res) {
     console.log(req.params.id);
+});
+
+app.get('/configuration', function(req, res) {
+    console.log(req);
 });
 /* Middelware API - End */
 

@@ -146,7 +146,7 @@ module.exports = ContentListingActions;
  */
 
 var React = require('react');
-
+var imageShackUrl = "https://ooyala.imageshack.com/200x145/";
 /* Render content list view */
 var ContentList = React.createClass({displayName: 'ContentList',
     render: function() {
@@ -154,7 +154,7 @@ var ContentList = React.createClass({displayName: 'ContentList',
             return (
                 React.DOM.div({className: "content", key: index}, 
                     React.DOM.a({className: "itemname", href: "#itemdetails/"+item.id}, 
-                        React.DOM.img({src: "https://ooyala.imageshack.com/200x145/"+item.images.portrait.url})
+                        React.DOM.img({src: imageShackUrl+item.images.portrait.url})
                     ), 
                     React.DOM.a({className: "itemname", href: "#itemdetails/"+item.id}, " ", item.title, " ")
                 )
@@ -180,6 +180,7 @@ var ListingActions = require('../actions/ListingActions');
 var ListingStore = require('../stores/ListingStore');
 
 var ListingMain = React.createClass({displayName: 'ListingMain',
+
     handleChange: function (e) {
         console.log(e);
     },
@@ -187,8 +188,6 @@ var ListingMain = React.createClass({displayName: 'ListingMain',
     getInitialState: function() {
         return {data: []};
     },
-  
-
 
     componentDidMount: function() {
         ListingActions.getContentList("SONYLIV");
@@ -196,7 +195,7 @@ var ListingMain = React.createClass({displayName: 'ListingMain',
 
     _onChange: function () {
         this.setState({
-            contents: ListingStore.getContentList()
+            contents: ListingStore.getContentList("SONYLIV")
         });
     },
 
@@ -209,26 +208,22 @@ var ListingMain = React.createClass({displayName: 'ListingMain',
     },
 
     render: function() {
-        console.log('test render');
+        console.log('Listing main render');
         console.log(this.state.contents);
         if(this.state.contents) {
             return (
                 React.DOM.div({className: "ContentBox"}, 
-                    AppgridList(null), 
                     ContentList({data: this.state.contents})
                 )
             );
         }
         else{
             return (
-                React.DOM.div({className: "ContentBox"}
-                )
+                React.DOM.div({className: "ContentBox"}, " ")
             );
         }
     }
-
 });
-
 
 module.exports = ListingMain;
 },{"../actions/ListingActions":3,"../stores/ListingStore":10,"./AppgridList.jsx":4,"./ContentList.jsx":5,"react":162}],7:[function(require,module,exports){
@@ -318,7 +313,7 @@ var CHANGE_EVENT = 'change',
     _contents = [];
 
 /**
- * Set the values for categories that will be used
+ * Set the values for contents that will be used
  * with components.
  */
 function setContentList (contents) {
