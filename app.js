@@ -38,7 +38,6 @@ app.get('/',function(req,res){
 
 app.get('/list', function(req, res){
     console.log('listing page');
-    console.log(req);
     http.get(wynk_api+feed_path, function(response) {
         var body;
         console.log("Got response: " + response.statusCode);
@@ -92,7 +91,6 @@ app.get('/itemdetails/:id', function(req, res) {
 });
 
 app.get('/configuration', function(req, res) {
-    console.log(req);
 });
 /* Middelware API - End */
 
